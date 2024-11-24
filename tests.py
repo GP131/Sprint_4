@@ -1,13 +1,5 @@
 import pytest
 
-from main import BooksCollector
-
-
-# Fixture to create a new instance of BooksCollector for each test
-@pytest.fixture
-def collector():
-    return BooksCollector()
-
 
 class TestBooksCollector:
 
@@ -84,21 +76,23 @@ class TestBooksCollector:
         books_genre = collector.get_books_genre()
         assert books_genre[book_name] == genre
 
-    # Test getting books for children
-    @pytest.mark.parametrize("book_name, genre", [
-        ("В поисках Немо", "Мультфильмы"),  # Book for children
-        ("Дракула", "Ужасы"),  # Adult genre
-        ("Красная Щапочка", "Фантастика"),  # Book for children
-        ("Убийство на улице Морг", "Детективы"),  # Adult genre
-    ])
-    def test_get_books_for_children(self, collector, book_name, genre):
+    # Test getting books for children (valid child genre)
+    def test_get_books_for_children_with_child_friendly_genre(self, collector):
+        book_name = "В поисках Немо"
+        genre = "Мультфильмы"
         collector.add_new_book(book_name)
         collector.set_book_genre(book_name, genre)
         children_books = collector.get_books_for_children()
-        if genre in collector.genre_age_rating:
-            assert book_name not in children_books
-        else:
-            assert book_name in children_books
+        assert book_name in children_books
+
+    # Test getting books for children (adult genre)
+    def test_get_books_for_children_with_adult_genre(self, collector):
+        book_name = "Дракула"
+        genre = "Ужасы"
+        collector.add_new_book(book_name)
+        collector.set_book_genre(book_name, genre)
+        children_books = collector.get_books_for_children()
+        assert book_name not in children_books
 
     # Test favorites addition
     def test_add_book_in_favorites(self, collector):
@@ -115,7 +109,7 @@ class TestBooksCollector:
 
     # Test getting favorites list
     def test_get_list_of_favorites_books(self, collector):
-        book_name = "Лучший Книга"
+        book_name = "Лучшая книга"
         collector.add_new_book(book_name)
         collector.add_book_in_favorites(book_name)
         favorites = collector.get_list_of_favorites_books()
