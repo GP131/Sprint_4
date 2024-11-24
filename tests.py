@@ -1,12 +1,13 @@
 import pytest
 
-
 from main import BooksCollector
+
 
 # Fixture to create a new instance of BooksCollector for each test
 @pytest.fixture
 def collector():
     return BooksCollector()
+
 
 class TestBooksCollector:
 
@@ -32,7 +33,7 @@ class TestBooksCollector:
     @pytest.mark.parametrize("book_name", [
         "",  # Empty book name
         "A" * 41,  # Book name exceeds 40 characters
-        #"Волшебник Страны Оз",   # Duplicate book errors out due to lack of prevention code in main
+        # "Волшебник Страны Оз",   # Duplicate book errors out due to lack of prevention code in main
     ])
     def test_add_new_book_invalid_name(self, collector, book_name):
         initial_books_count = len(collector.get_books_genre())
@@ -42,14 +43,14 @@ class TestBooksCollector:
 
     # Test setting book genre
     @pytest.mark.parametrize("book_name, genre", [
-            ("Хоббит, или Туда и обратно", "Фантастика"),
-            ("Дракула", "Ужасы"),
-            ("В поисках Немо", "Мультфильмы"),
+        ("Хоббит, или Туда и обратно", "Фантастика"),
+        ("Дракула", "Ужасы"),
+        ("В поисках Немо", "Мультфильмы"),
     ])
     def test_set_book_genre(self, collector, book_name, genre):
-            collector.add_new_book(book_name)
-            collector.set_book_genre(book_name, genre)
-            assert collector.get_book_genre(book_name) == genre
+        collector.add_new_book(book_name)
+        collector.set_book_genre(book_name, genre)
+        assert collector.get_book_genre(book_name) == genre
 
     # Test if the genre returned matches the expected genre for a specific book
     def test_get_book_genre_from_name(self, collector):
@@ -73,9 +74,9 @@ class TestBooksCollector:
 
     # Test getting the list of book genres
     @pytest.mark.parametrize("book_name, genre", [
-            ("Хоббит, или Туда и обратно", "Фантастика"),
-            ("Дракула", "Ужасы"),
-            ("В поисках Немо", "Мультфильмы"),
+        ("Хоббит, или Туда и обратно", "Фантастика"),
+        ("Дракула", "Ужасы"),
+        ("В поисках Немо", "Мультфильмы"),
     ])
     def test_get_books_genre(self, collector, book_name, genre):
         collector.add_new_book(book_name)
@@ -85,10 +86,10 @@ class TestBooksCollector:
 
     # Test getting books for children
     @pytest.mark.parametrize("book_name, genre", [
-            ("В поисках Немо", "Мультфильмы"),  # Book for children
-            ("Дракула", "Ужасы"),  # Adult genre
-            ("Красная Щапочка", "Фантастика"),  # Book for children
-            ("Убийство на улице Морг", "Детективы"),  # Adult genre
+        ("В поисках Немо", "Мультфильмы"),  # Book for children
+        ("Дракула", "Ужасы"),  # Adult genre
+        ("Красная Щапочка", "Фантастика"),  # Book for children
+        ("Убийство на улице Морг", "Детективы"),  # Adult genre
     ])
     def test_get_books_for_children(self, collector, book_name, genre):
         collector.add_new_book(book_name)
