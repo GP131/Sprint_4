@@ -23,9 +23,8 @@ class TestBooksCollector:
 
     # Test adding invalid books
     @pytest.mark.parametrize("book_name", [
-        "",  # Empty book name
-        "A" * 41,  # Book name exceeds 40 characters
-        # "Волшебник Страны Оз",   # Duplicate book errors out due to lack of prevention code in main
+        "",
+        "A" * 41,
     ])
     def test_add_new_book_invalid_name(self, collector, book_name):
         initial_books_count = len(collector.get_books_genre())
